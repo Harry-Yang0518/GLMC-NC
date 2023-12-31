@@ -72,7 +72,7 @@ class Cifar100Imbanlance(Dataset):
 
         self.per_class_num = data_percent
         print("imbanlance ratio is {}".format(data_percent[0] / data_percent[-1]))
-        print("per class num：{}".format(data_percent))
+        print("per class num:{}".format(data_percent))
 
         for i in range(1, self.num_cls + 1):
             a1 = y_train >= i - 1

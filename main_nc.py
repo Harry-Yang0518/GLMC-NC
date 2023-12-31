@@ -37,7 +37,7 @@ def main(args):
         cudnn.benchmark = True
 
     os.environ["WANDB_API_KEY"] = "cd3fbdd397ddb5a83b1235d177f4d81ce1200dbb"
-    os.environ["WANDB_MODE"] = "online" #"dryrun"
+    os.environ["WANDB_MODE"] = "dryrun" #"dryrun"
     #os.environ["WANDB_CACHE_DIR"] = "/scratch/hy2611/sseg/.cache/wandb"
     #os.environ["WANDB_CONFIG_DIR"] = "/scratch/hy2611/sseg/.config/wandb"
     wandb.login(key='cd3fbdd397ddb5a83b1235d177f4d81ce1200dbb')

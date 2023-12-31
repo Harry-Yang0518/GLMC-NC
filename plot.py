@@ -5,7 +5,7 @@ import pickle
 import numpy as np 
 from matplotlib import pyplot as plt
 
-root = f"/scratch/lg154/GLMC_NC/output/cifar10_resnet32/{sys.argv[1]}"
+root = f"/scratch/hy2611/GLMC-NC/output/cifar10_resnet32/{sys.argv[1]}"
 
 epoch = sys.argv[2]
 

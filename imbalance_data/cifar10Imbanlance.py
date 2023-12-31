@@ -5,7 +5,7 @@ import numpy as np
 from PIL import Image
 
 class Cifar10Imbanlance(Dataset):
-    def __init__(self, imbanlance_rate, num_cls=10, file_path="data/",
+    def __init__(self, imbanlance_rate, num_cls=10, file_path="/scratch/hy2611/dataset/cifar-10-batches-py",
                  train=True, transform=None, label_align=True, ):
         self.transform = transform
         self.label_align = label_align

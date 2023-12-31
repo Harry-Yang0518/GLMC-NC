@@ -57,7 +57,7 @@ def main(args):
     #os.environ["WANDB_CACHE_DIR"] = "/scratch/hy2611/sseg/.cache/wandb"
     #os.environ["WANDB_CONFIG_DIR"] = "/scratch/hy2611/sseg/.config/wandb"
     wandb.login(key='cd3fbdd397ddb5a83b1235d177f4d81ce1200dbb')
-    wandb.init(project="debug",name=args.store_name)
+    wandb.init(project="MX0_CF100_A",name=args.store_name)
     wandb.config.update(args)
     main_worker(args.gpu, wandb.config)
 
@@ -143,7 +143,7 @@ if __name__ == '__main__':
     # train set
     parser = argparse.ArgumentParser(description="Global and Local Mixture Consistency Cumulative Learning")
     parser.add_argument('--dataset', type=str, default='cifar100', help="cifar10,cifar100,ImageNet-LT,iNaturelist2018")
-    parser.add_argument('--root', type=str, default='../dataset/', help="dataset setting")
+    parser.add_argument('--root', type=str, default='/scratch/hy2611/dataset/', help="dataset setting")
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet32',
                         choices=('resnet18', 'resnet34', 'resnet32', 'resnet50', 'resnext50_32x4d'))
     parser.add_argument('--num_classes', default=100, type=int, help='number of classes ')
