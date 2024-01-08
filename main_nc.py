@@ -37,11 +37,11 @@ def main(args):
         cudnn.benchmark = True
 
     os.environ["WANDB_API_KEY"] = "cd3fbdd397ddb5a83b1235d177f4d81ce1200dbb"
-    os.environ["WANDB_MODE"] = "dryrun" #"dryrun"
+    os.environ["WANDB_MODE"] = "online" #"dryrun"
     #os.environ["WANDB_CACHE_DIR"] = "/scratch/hy2611/sseg/.cache/wandb"
     #os.environ["WANDB_CONFIG_DIR"] = "/scratch/hy2611/sseg/.config/wandb"
     wandb.login(key='cd3fbdd397ddb5a83b1235d177f4d81ce1200dbb')
-    wandb.init(project="debug",name=args.store_name)
+    wandb.init(project="CF100_Find_Alpha",name=args.store_name)
     wandb.config.update(args)
     main_worker(args.gpu, wandb.config)
 
@@ -70,12 +70,12 @@ def main_worker(gpu, args):
 
     # ================= Data loading code
     train_dataset, val_dataset = get_dataset_balanced(args)
-    num_classes = len(np.unique(train_dataset.targets))
-    assert num_classes == args.num_classes
+    # num_classes = len(np.unique(train_dataset.targets))
+    # assert num_classes == args.num_classes
 
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
                                                num_workers=args.workers, persistent_workers=True, pin_memory=True, sampler=None)
-    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False,
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=64, shuffle=False,
                                              num_workers=args.workers, persistent_workers=True, pin_memory=True)
 
     start_time = time.time()
@@ -92,6 +92,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', type=str, default='cifar100', help="cifar10,cifar100,stl10")
     parser.add_argument('--root', type=str, default='../dataset/', help="dataset setting")
     parser.add_argument('--aug', default='null', help='data augmentation')  # null | pc (padded_random_crop)
+    parser.add_argument('--coarse', default=False, action='store_true')
 
     # model structure
     parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet32', choices=('resnet18', 'resnet34', 'resnet32', 'resnet50', 'resnext50_32x4d'))
@@ -135,7 +136,12 @@ if __name__ == '__main__':
     if args.dataset == 'cifar10' or args.dataset == 'fmnist':
         args.num_classes = 10
     elif args.dataset == 'cifar100':
-        args.num_classes = 100
+        if args.coarse:
+            args.num_classes = 20
+        else:
+            args.num_classes = 100
+    elif args.dataset == 'stl10':
+        args.num_classes = 10
     elif args.dataset == 'ImageNet-LT':
         args.num_classes = 1000
     elif args.dataset == 'iNaturelist2018':

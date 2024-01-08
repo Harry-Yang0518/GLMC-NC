@@ -6,6 +6,7 @@ import datetime
 import argparse
 from torch.backends import cudnn
 import torch.nn as nn
+from torch.utils.data import WeightedRandomSampler
 
 from utils import util
 from utils.util import *
@@ -57,7 +58,7 @@ def main(args):
     #os.environ["WANDB_CACHE_DIR"] = "/scratch/hy2611/sseg/.cache/wandb"
     #os.environ["WANDB_CONFIG_DIR"] = "/scratch/hy2611/sseg/.config/wandb"
     wandb.login(key='cd3fbdd397ddb5a83b1235d177f4d81ce1200dbb')
-    wandb.init(project="MX0_CF100_A",name=args.store_name)
+    wandb.init(project="cf100-MX-ETF-Classifier",name=args.store_name)
     wandb.config.update(args)
     main_worker(args.gpu, wandb.config)
 

@@ -10,8 +10,9 @@
 #SBATCH --partition=a100_1,a100_2,v100,rtx8000
 
 # job info
-MIXUP=$1
-ALPHA=$2
+LOSS=$1
+BS=$2
+SEED=$3
 
 
 # Singularity path
@@ -21,9 +22,9 @@ sif_path=/scratch/hy2611/cuda11.4.2-cudnn8.2.4-devel-ubuntu20.04.3.sif
 # start running
 singularity exec --nv \
 --overlay ${ext3_path}:ro \
+--overlay /scratch/hy2611/dataset/tinyimagenet.sqf:ro \
 ${sif_path} /bin/bash -c "
 source /ext3/env.sh
-python /scratch/hy2611/GLMC-NC/main_wb.py --dataset cifar10 -a resnet32 --imbanlance_rate 0.01 --beta 0.5 --lr 0.01 \
---epochs 200 --loss ce --resample_weighting 0 --mixup ${MIXUP} --mixup_alpha ${ALPHA} --store_name lt_ce_mx${MIXUP}a${ALPHA} \
-
-" 
+python scratch/hy2611/GLMC-NC/main_nc.py --dataset cifar10 -a resnet18 --epochs 800 --scheduler ms --norm gn \
+  --loss ${LOSS} --eps 0.05 --batch_size ${BS} --seed 202${SEED} --store_name gn_${LOSS}_b${BS}_s${SEED}
+"
